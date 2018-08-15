@@ -1,0 +1,118 @@
+Configuration:
+  status: WARN
+  Properties:
+    Property:
+      - name: LOG_PATH
+        value: logs
+      - name: LOG_PATTERN
+        value: "[%p]:%d{yyyy-MM-dd HH:mm:ss} %l - %m%n"
+      - name: LOG_INTERVAL
+        value: 1
+      - name: LOG_RETENTION
+        value: 30d
+  Appenders:
+    Console:
+      name: Console
+      target: SYSTEM_OUT
+      PatternLayout:
+        pattern: ${LOG_PATTERN}
+    RollingFile:
+      - name: RollingFileInfo
+        ThresholdFilter:
+          level: info
+          onMatch: ACCEPT
+          onMismatch: DENY
+        fileName: ${LOG_PATH}/info.log
+        filePattern: ${LOG_PATH}/info.%d{yyyy-MM-dd}.log
+        PatternLayout:
+          pattern: ${LOG_PATTERN}
+        Policies:
+          TimeBasedTriggeringPolicy:
+            modulate: true
+            interval: ${LOG_INTERVAL}
+        DefaultRolloverStrategy:
+          max: 20
+          delete:
+            basePath: ${LOG_PATH}
+            maxDepth: 1
+            IfFileName:
+              glob: "*.log"
+            IfLastModified:
+              age: ${LOG_RETENTION}
+      - name: RollingFileWarn
+        ThresholdFilter:
+          level: warn
+          onMatch: ACCEPT
+          onMismatch: DENY
+        fileName: ${LOG_PATH}/warn.log
+        filePattern: ${LOG_PATH}/warn.%d{yyyy-MM-dd}.log
+        PatternLayout:
+          pattern: ${LOG_PATTERN}
+        Policies:
+          TimeBasedTriggeringPolicy:
+            modulate: true
+            interval: ${LOG_INTERVAL}
+        DefaultRolloverStrategy:
+          max: 20
+          delete:
+            basePath: ${LOG_PATH}
+            maxDepth: 1
+            IfFileName:
+              glob: "*.log"
+            IfLastModified:
+              age: ${LOG_RETENTION}
+      - name: RollingFileError
+        ThresholdFilter:
+          level: error
+          onMatch: ACCEPT
+          onMismatch: DENY
+        fileName: ${LOG_PATH}/error.log
+        filePattern: ${LOG_PATH}/error.%d{yyyy-MM-dd}.log
+        PatternLayout:
+          pattern: ${LOG_PATTERN}
+        Policies:
+          TimeBasedTriggeringPolicy:
+            modulate: true
+            interval: ${LOG_INTERVAL}
+        DefaultRolloverStrategy:
+          max: 20
+          delete:
+            basePath: ${LOG_PATH}
+            maxDepth: 1
+            IfFileName:
+              glob: "*.log"
+            IfLastModified:
+              age: ${LOG_RETENTION}
+      - name: RollingFileStat
+        fileName: ${LOG_PATH}/stat.log
+        filePattern: ${LOG_PATH}/stat.%d{yyyy-MM-dd}.log
+        PatternLayout:
+          pattern: "%m%n"
+        Policies:
+          TimeBasedTriggeringPolicy:
+            modulate: true
+            interval: ${LOG_INTERVAL}
+        DefaultRolloverStrategy:
+          max: 20
+          delete:
+            basePath: ${LOG_PATH}
+            maxDepth: 1
+            IfFileName:
+              glob: "*.log"
+            IfLastModified:
+              age: ${LOG_RETENTION}
+  Loggers:
+    Root:
+      level: info
+      additivity: false
+      AppenderRef:
+        - ref: Console
+        - ref: RollingFileInfo
+        - ref: RollingFileWarn
+        - ref: RollingFileError
+    Logger:
+      - name: stat
+        level: info
+        additivity: true
+        AppenderRef:
+          - ref: RollingFileStat

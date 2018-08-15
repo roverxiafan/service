@@ -1,0 +1,98 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: speech
+  aop:
+    auto: true
+    proxy-target-class: true
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  servlet:
+    multipart:
+      enabled: true
+      location: '/tmp'
+      file-size-threshold: 10MB
+      max-file-size: 100MB
+      max-request-size: 100MB
+  thymeleaf:
+    cache: false
+server:
+  port: 8080
+  ssl:
+    enabled: false
+    key-store: classpath:keystore.p12
+    key-store-password: yeelion
+    key-store-type: PKCS12
+    key-alias: tomcat
+#  address: 192.168.3.11
+  servlet:
+    context-path: /speech
+  tomcat:
+    basedir:
+    uri-encoding: UTF-8
+    max-threads: 500
+    min-spare-threads: 50
+    accept-count: 500
+    accesslog:
+      enabled: true
+      prefix: access_log
+      suffix: .log
+      file-date-format: .yyyy-MM-dd
+      rotate: true
+#      directory: ./logs
+      rename-on-rotate: true
+      pattern: "%h %l %u %t &quot;%r&quot; %D %T %{Referer}i %{User-Agent}i %{X-FORWARDED-FOR}i %s %b"
+logging:
+  path: logs
+  level:
+    com.example: info
+upload:
+  forbidden-extensions: bin,exe,bat,sh,php,jsp,asp,aspx
+  allow-extensions: mp3
+  base-path: '/data/store'
+  base-url: 'http://test.com/img'
+  tmp-path: '/tmp'
+speech-recognition:
+  baidu:
+    one:
+      app-id: 10808350
+      api-key: PjiYCKFhkGxgRAcSVYUjXfv5
+      secret-key: 5e2ebeae2cc84f145552d44f39472561
+      connection-timeout: 5000
+      socket-timeout: 5000
+    two:
+      app-id: 10808362
+      api-key: Kd8aMuGkjVVpjB7prKnrtq1G
+      secret-key: 7622a853db88cc9d26a04b5bb1fb7780
+      connection-timeout: 5000
+      socket-timeout: 5000
+    three:
+      app-id: 10780252
+      api-key: Xp9G9m0o3raNDTVwoZkDznTa
+      secret-key: 2f6b452178965335ab7dcecf65278a5a
+      connection-timeout: 5000
+      socket-timeout: 5000
+redisson:
+  address: "redis://192.168.3.11:6380"
+  thread: 8
+  codec: org.redisson.codec.JsonJacksonCodec
+  connectionMinimumIdleSize: 10
+  idleConnectionTimeout: 10000
+  pingTimeout: 1000
+  connectTimeout: 10000
+  timeout: 3000
+  retryAttempts: 3
+  retryInterval: 1000
+  reconnectionTimeout: 3000
+  failedAttempts: 3
+  subscriptionsPerConnection: 10
+  subscriptionConnectionMinimumIdleSize: 1
+  subscriptionConnectionPoolSize: 50
+  connectionPoolSize: 64
+  database: 0
+  dnsMonitoring: false
+  dnsMonitoringInterval: 5000

@@ -1,0 +1,12 @@
+spring:
+  servlet:
+    multipart:
+      location: 'd:\opt'
+upload:
+  forbidden-extensions: bin,exe,bat,sh,php,jsp,asp,aspx
+  allow-extensions: mp3
+  base-path: 'd:\opt'
+  base-url: 'http://test.com/img'
+  tmp-path: 'd:\opt'
+redisson:
+  address: "redis://192.168.3.11:6380"

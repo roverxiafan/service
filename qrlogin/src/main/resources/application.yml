@@ -1,0 +1,50 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: qrlogin
+  aop:
+    auto: true
+    proxy-target-class: true
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  servlet:
+    multipart:
+      enabled: true
+      location: '/tmp'
+      file-size-threshold: 10MB
+      max-file-size: 100MB
+      max-request-size: 100MB
+  thymeleaf:
+    cache: false
+server:
+  port: 8080
+  ssl:
+    enabled: false
+    key-store: classpath:keystore.p12
+    key-store-password: yeelion
+    key-store-type: PKCS12
+    key-alias: tomcat
+#  address: 192.168.3.11
+  servlet:
+    context-path: /qrlogin
+  tomcat:
+    basedir:
+    uri-encoding: UTF-8
+    max-threads: 500
+    min-spare-threads: 50
+    accept-count: 500
+    accesslog:
+      enabled: true
+      prefix: access_log
+      suffix: .log
+      file-date-format: .yyyy-MM-dd
+      rotate: true
+#      directory: ./logs
+      rename-on-rotate: true
+      pattern: "%h %l %u %t &quot;%r&quot; %D %T %{Referer}i %{User-Agent}i %{X-FORWARDED-FOR}i %s %b"
+logging:
+  path: logs
