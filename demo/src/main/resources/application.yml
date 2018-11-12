@@ -6,6 +6,9 @@ spring:
   aop:
     auto: true
     proxy-target-class: true
+  jackson:
+    date-format: "yyyy-MM-dd HH:mm:ss"
+    time-zone: "GMT+8"
   http:
     encoding:
       charset: UTF-8
@@ -50,6 +53,7 @@ logging:
   path: logs
   level:
     com.example: info
+  config: classpath:log4j2.yml
 encrypt:
   encryptions:
     web: "VFMeI^dM#I%69e5B"

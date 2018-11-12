@@ -44,7 +44,7 @@ public class WebConfigurer implements WebMvcConfigurer {
                 .allowedOrigins("*")
                 .allowCredentials(true)
                 .allowedHeaders("Origin", "X-Requested-With", "Content-Type", "Accept")
-                .allowedMethods("GET", "POST", "DELETE", "PUT")
+                .allowedMethods("GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE")
                 .maxAge(1800L);
     }
 
