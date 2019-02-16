@@ -6,9 +6,12 @@ import com.example.web.result.RetCodeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -88,6 +91,27 @@ public class BaseExceptionHandler {
 	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
 	public ResponseEntity<Object> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e){
 		return new ResponseEntity<>(R.error(RetCodeEnum.INCORRECT_HTTP_METHOD.val(), RetCodeEnum.INCORRECT_HTTP_METHOD.msg()), HttpStatus.METHOD_NOT_ALLOWED);
+	}
+
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException e){
+		BindingResult bindingResult = e.getBindingResult();
+
+		StringBuilder errorInfo = new StringBuilder();
+
+		for (FieldError fieldError : bindingResult.getFieldErrors()) {
+			errorInfo.append(fieldError.getDefaultMessage()).append(",");
+		}
+		if(errorInfo.length()>1) {
+			errorInfo.deleteCharAt(errorInfo.length()-1);
+		}
+
+		return new ResponseEntity<>(R.error(RetCodeEnum.ILLEGAL_PARAM.val(), errorInfo.toString()), HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	public ResponseEntity<Object> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
+		return new ResponseEntity<>(R.error(RetCodeEnum.ILLEGAL_PARAM.val(), RetCodeEnum.ILLEGAL_PARAM.msg()), HttpStatus.BAD_REQUEST);
 	}
 
 //	@ExceptionHandler(EmptyResultDataAccessException.class)
